@@ -18,10 +18,24 @@ search = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR,'input._se
 
 search.send_keys('아이폰 케이스\n')
 time.sleep(2)
-wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR,"a[class^='basicList_link__']")))
-titles = chrome.find_elements(By.CSS_SELECTOR,"a[class^='basicList_link__']")
+wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR,"div[class^='basicList_info_area__']")))
 
-for title in titles:
-    print(title.text)
+
+
+#스크롤
+#셀레니움이 자바스크립트를 실행시킬 수 있음.
+for i in range(20):
+    chrome.execute_script('window.scrollBy(0,10000)')
+
+time.sleep(3)
+items = chrome.find_elements(By.CSS_SELECTOR,"div[class^='basicList_info_area__']")
+for item in items:
+    #광고 빼기
+    try:
+        item.parent.parent.find_element(By.CSS_SELECTOR,'button[class^="ad_"]')
+        continue
+    except:
+        pass
+    print(item.find_element(By.CSS_SELECTOR,'a[class^="basicList_link__"]').text)
 
 chrome.close()
